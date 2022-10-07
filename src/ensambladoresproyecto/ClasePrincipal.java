@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -279,6 +280,9 @@ public class ClasePrincipal extends javax.swing.JFrame {
     //Creamos el objeto JFileChooser
     JFileChooser Sfile = new JFileChooser(); 
     
+    FileNameExtensionFilter filtro = new FileNameExtensionFilter("*.asm","asm");
+    
+    Sfile.setFileFilter(filtro);
     //abre la ventana, guarda la opcion seleccionada por el usuario
     int SeleccionFile = Sfile.showOpenDialog(this);
     
@@ -288,7 +292,7 @@ public class ClasePrincipal extends javax.swing.JFrame {
         //Seleccionar el archivo
         File archivo = Sfile.getSelectedFile();
         
-        //Escribe el contenido del archivo seleccionado en el ScrollPane
+        //Escribe el contenido del archivo seleccionado en el JTextArea
         TextPaneCodigoFuente.setText(archivo.getAbsolutePath());
         
         try (FileReader fileread = new FileReader(archivo)){
