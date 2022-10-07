@@ -277,6 +277,8 @@ public class ClasePrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSelectFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectFileActionPerformed
+    
+    TextPaneCodigoFuente.setEditable(false);    
     //Creamos el objeto JFileChooser
     JFileChooser Sfile = new JFileChooser(); 
     
