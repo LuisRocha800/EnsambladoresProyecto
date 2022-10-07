@@ -1,15 +1,16 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package ensambladoresproyecto;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 /**
  *
@@ -42,13 +43,14 @@ public class ClasePrincipal extends javax.swing.JFrame {
         btnSelectFile = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        ScrollPaneCodigoFuente = new javax.swing.JScrollPane();
         jPanel5 = new javax.swing.JPanel();
         ScrollPaneAnalisisLexico = new javax.swing.JScrollPane();
         jPanel6 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         ScrollPaneSeparacion = new javax.swing.JScrollPane();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        TextPaneCodigoFuente = new javax.swing.JTextPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ANALIZADOR LEXICOGRAFICO");
@@ -71,7 +73,7 @@ public class ClasePrincipal extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(10, 10, 10)
-                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)
+                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -151,9 +153,6 @@ public class ClasePrincipal extends javax.swing.JFrame {
             .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        ScrollPaneCodigoFuente.setBackground(new java.awt.Color(32, 33, 36));
-        ScrollPaneCodigoFuente.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(93, 123, 184), 2, true));
-
         jPanel5.setBackground(new java.awt.Color(93, 123, 184));
         jPanel5.setPreferredSize(new java.awt.Dimension(3, 0));
 
@@ -209,6 +208,8 @@ public class ClasePrincipal extends javax.swing.JFrame {
         ScrollPaneSeparacion.setBackground(new java.awt.Color(32, 33, 36));
         ScrollPaneSeparacion.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(93, 123, 184), 2, true));
 
+        jScrollPane1.setViewportView(TextPaneCodigoFuente);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -216,16 +217,16 @@ public class ClasePrincipal extends javax.swing.JFrame {
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(ScrollPaneCodigoFuente)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ScrollPaneSeparacion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -247,7 +248,9 @@ public class ClasePrincipal extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(ScrollPaneSeparacion)
-                            .addComponent(ScrollPaneCodigoFuente)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 449, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -273,7 +276,37 @@ public class ClasePrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSelectFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectFileActionPerformed
-
+    //Creamos el objeto JFileChooser
+    JFileChooser Sfile = new JFileChooser(); 
+    
+    //abre la ventana, guarda la opcion seleccionada por el usuario
+    int SeleccionFile = Sfile.showOpenDialog(this);
+    
+    //Si el usuario teclea aceptar
+    if (SeleccionFile == JFileChooser.APPROVE_OPTION){
+        
+        //Seleccionar el archivo
+        File archivo = Sfile.getSelectedFile();
+        
+        //Escribe el contenido del archivo seleccionado en el ScrollPane
+        TextPaneCodigoFuente.setText(archivo.getAbsolutePath());
+        
+        try (FileReader fileread = new FileReader(archivo)){
+           String cadena = "";
+           int valor = fileread.read();
+           while (valor != -1){
+              cadena = cadena + (char) valor;
+               valor = fileread.read();
+               
+           }
+           TextPaneCodigoFuente.setText(cadena);
+           
+        }  catch (IOException e){
+            e.printStackTrace();
+        }
+        
+    }
+    
     }//GEN-LAST:event_btnSelectFileActionPerformed
 
     /**
@@ -314,8 +347,8 @@ public class ClasePrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane ScrollPaneAnalisisLexico;
-    private javax.swing.JScrollPane ScrollPaneCodigoFuente;
     private javax.swing.JScrollPane ScrollPaneSeparacion;
+    private javax.swing.JTextPane TextPaneCodigoFuente;
     private javax.swing.JButton btnSelectFile;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -329,5 +362,6 @@ public class ClasePrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }
