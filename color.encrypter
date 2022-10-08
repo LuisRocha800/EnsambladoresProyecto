@@ -1,0 +1,168 @@
+include 'emu8086.inc'
+.stack
+dw 128 dup(0)
+ends
+
+.data
+  texto db 50 dup(''),'$'
+ends
+
+.code
+
+call main
+
+    mov ax, @data
+    mov ds, ax
+
+main proc
+menu
+main endp
+
+menu macro    
+    mov al, 13h
+    mov ah, 0
+    int 10h
+    printn " MODO GRAFICO"
+    printn ""
+    printn ""
+    printn " COLORES"
+    printn ""
+    printn " 0. AZUL"
+    printn " 1. VERDE"
+    printn " 2. CYAN"
+    printn " 3. ROJO"
+    printn " 4. MAGENTA"
+    printn " 5. CAFE"
+    printn " 6. GRIS CLARO"
+    printn " 7. GRIS OSCURO"
+    printn " 8. AZUL CLARO"
+    printn " 9. VERDE CLARO"
+    printn ""
+    printn " OPCION: "
+    call scan_num
+    cmp cx, 0
+    je call color0
+    cmp cx, 1
+    je call color1
+    cmp cx, 2
+    je call color2
+    cmp cx, 3
+    je call color3
+    cmp cx, 4
+    je call color4
+    cmp cx, 5
+    je call color5
+    cmp cx, 6
+    je call color6
+    cmp cx, 7
+    je call color7
+    cmp cx, 8
+    je call color8
+    cmp cx, 9
+    je call color9 
+    ret
+endm
+    
+color0:
+    mov al, 13h
+    mov ah, 0
+    int 10h
+    
+    printn ""
+    printn " ingresa un texto no mayor de cincuenta caracteres"
+    printn ""
+    
+    mov ah, 0ah
+    lea dx, texto
+    int 21h
+    
+    printn "" 
+    
+    mov si, offset texto
+    mov di, 0 
+    
+bucle proc    
+    mov ah, 02h
+    mov bh, 00h
+    mov dx, di
+    mov dh, 7
+    int 10h
+    lodsb
+    cmp al, '$'
+    je main
+    
+    mov ah, 09h
+    mov bh, 0
+    mov bl, 0Ah
+    mov cx, 1
+    int 10h
+    inc di
+    jmp call bucle
+bucle endp
+    
+color1:
+    mov al, 13h
+    mov ah, 0
+    int 10h
+    
+    printn ""
+    printn " ingresa un texto no mayor de cincuenta caracteres"
+    printn ""
+    
+    mov ah, 0ah
+    lea dx, texto
+    int 21h
+    
+    printn "" 
+    
+    mov si, offset texto
+    mov di, 0 
+    
+bucle2 proc    
+    mov ah, 02h
+    mov bh, 00h
+    mov dx, di
+    mov dh, 7
+    int 10h
+    lodsb
+    cmp al, '$'
+    je main
+    
+    mov ah, 09h
+    mov bh, 0
+    mov bl, 02h
+    mov cx, 1
+    int 10h
+    inc di
+    jmp call bucle2
+bucle2 endp   
+
+
+color2:
+
+
+color3:
+
+
+color4:
+
+
+color5:
+
+
+color6:
+
+
+color7:
+
+
+color8:
+
+
+color9:
+    
+    
+    
+    
+ends
+     define_scan_num
