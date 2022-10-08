@@ -1,16 +1,27 @@
 package ensambladoresproyecto;
 
+import compilerTools.Directory;
+import compilerTools.ErrorLSSL;
+import compilerTools.Functions;
+import compilerTools.Grammar;
+import compilerTools.Production;
+import compilerTools.TextColor;
+import compilerTools.Token;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.Timer;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -18,12 +29,25 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author Luis Angel Rocha
  */
 public class ClasePrincipal extends javax.swing.JFrame {
-
+   
+    private String title;
+    private Directory Directorio;
+    private ArrayList<Token> tokens;
+    private ArrayList<ErrorLSSL> errors;
+    private ArrayList<TextColor> textsColor;
+    private Timer timerKeyReleased;
+    private ArrayList<Production> identProd;
+    private HashMap<String, String> identificadores;
+    private boolean codeHasBeenCompiled = false;
+    
+    
+    
     /**
      * Creates new form M
      */
     public ClasePrincipal() {
         initComponents();
+        init();
     }
 
     /**
@@ -49,9 +73,10 @@ public class ClasePrincipal extends javax.swing.JFrame {
         jPanel6 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        ScrollPaneSeparacion = new javax.swing.JScrollPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         TextPaneCodigoFuente = new javax.swing.JTextPane();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        textAreaSeparacion = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ANALIZADOR LEXICOGRAFICO");
@@ -206,10 +231,11 @@ public class ClasePrincipal extends javax.swing.JFrame {
             .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
         );
 
-        ScrollPaneSeparacion.setBackground(new java.awt.Color(32, 33, 36));
-        ScrollPaneSeparacion.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(93, 123, 184), 2, true));
-
         jScrollPane1.setViewportView(TextPaneCodigoFuente);
+
+        textAreaSeparacion.setColumns(20);
+        textAreaSeparacion.setRows(5);
+        jScrollPane2.setViewportView(textAreaSeparacion);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -224,9 +250,9 @@ public class ClasePrincipal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ScrollPaneSeparacion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -235,7 +261,7 @@ public class ClasePrincipal extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(ScrollPaneAnalisisLexico)
                         .addGap(2, 2, 2)))
-                .addGap(560, 560, 560))
+                .addGap(562, 562, 562))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -248,10 +274,8 @@ public class ClasePrincipal extends javax.swing.JFrame {
                             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(ScrollPaneSeparacion)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))))
+                            .addComponent(jScrollPane2)
+                            .addComponent(jScrollPane1)))
                     .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 449, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -266,18 +290,117 @@ public class ClasePrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1268, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1268, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnSelectFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectFileActionPerformed
+    private void init(){
+        //definir titulo que se mostrara la ventana
+        title = "ANALIZADOR LEXICOGRAFICO";
+        //mostrar ventana en centro de la pantalla
+        setLocationRelativeTo(null);
+        //concatenar titulo a la ventana
+        setTitle(title);
+        //definir el panel que concatenaremos, el componente, el titulo de ventana, la extension del archivo
+        Directorio = new Directory(this,TextPaneCodigoFuente,title,".asm");
+        
+        addWindowListener(new WindowAdapter(){
+           @Override
+           //metodo que permitira guardar cambios si se realzaran desde el panel editor
+           public void windowClosing(WindowEvent e){
+               Directorio.Exit();
+               System.exit(0);
+           }
+        });
+        
+        //enumera las filas del editor
+        Functions.setLineNumberOnJTextComponent(TextPaneCodigoFuente);
+        // inicializar timer para colorear lineas del codigo
+        timerKeyReleased = new Timer(300, ((e) -> {
+            timerKeyReleased.stop();
+            colorAnalysis();
+        }));
+        //pone un * en la ventana cuando modifiquemos codigo en señal de que se realizo la modificacion
+        Functions.insertAsteriskInName(this, TextPaneCodigoFuente, () ->{
+        //lamara metodo restart    
+            timerKeyReleased.restart();
+        });
+        
+        //inicializar ArrayList's a un ArrayList vacio
+        tokens = new ArrayList<>();
+        errors = new ArrayList<>();
+        textsColor = new ArrayList<>();
+        identProd = new ArrayList<>();
+        identificadores = new HashMap<>();
+        
+        //metodo para incluir un autocompletador de codigo parecido al de NetBeans
+        //se activa tecleando Ctrl + Space
+        Functions.setAutocompleterJTextComponent(new String[]{".stack","stack segment",".data",
+        "data segment",".code","code segment","ends"},TextPaneCodigoFuente, ()->{
+            timerKeyReleased.restart();
+        });                
+    }
+         
+    private void colorAnalysis(){
+        
+    }
     
+    private void compile(){
+        lexicalAnalysis();
+        fillPaneTokens();
+        fillPaneAnalisisLexico();
+        syntaticAnalysis();
+        semanticAnalysis();
+        printConsole();
+        codeHasBeenCompiled = true;
+    }
+    private void lexicalAnalysis(){
+        
+    }
+    
+    private void fillPaneTokens(){
+     tokens.forEach(token ->{
+     //   Object[] data = new Object 
+     });  
+    }
+    
+    private void fillPaneAnalisisLexico(){
+        
+    }
+    
+    private void syntaticAnalysis(){
+      //crear objeto Grammar de la lib compilerTools 
+      Grammar gramatica = new Grammar(tokens,errors);
+      
+      gramatica.show();
+    }
+    
+    private void semanticAnalysis(){
+        
+    }
+    
+    private void printConsole(){
+        
+    }
+    private void btnSelectFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectFileActionPerformed
+    Scanner entrada = null;
+    boolean commillas=false,primercomilla=false;
+    boolean decimal,noinicianumero,entero,corchete;
+    
+    
+    //Bloquea la edicion del JTextArea
     TextPaneCodigoFuente.setEditable(false);    
     //Creamos el objeto JFileChooser
     JFileChooser Sfile = new JFileChooser(); 
@@ -310,7 +433,7 @@ public class ClasePrincipal extends javax.swing.JFrame {
         }  catch (IOException e){
             e.printStackTrace();
         }
-        
+              
     }
     
     }//GEN-LAST:event_btnSelectFileActionPerformed
@@ -353,7 +476,6 @@ public class ClasePrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane ScrollPaneAnalisisLexico;
-    private javax.swing.JScrollPane ScrollPaneSeparacion;
     private javax.swing.JTextPane TextPaneCodigoFuente;
     private javax.swing.JButton btnSelectFile;
     private javax.swing.JLabel jLabel1;
@@ -369,5 +491,7 @@ public class ClasePrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextArea textAreaSeparacion;
     // End of variables declaration//GEN-END:variables
 }
