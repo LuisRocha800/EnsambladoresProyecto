@@ -1,5 +1,6 @@
 package ensambladoresproyecto;
 
+import com.formdev.flatlaf.FlatIntelliJLaf;
 import compilerTools.Directory;
 import compilerTools.ErrorLSSL;
 import compilerTools.Functions;
@@ -22,6 +23,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.Timer;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -69,14 +72,12 @@ public class ClasePrincipal extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
-        ScrollPaneAnalisisLexico = new javax.swing.JScrollPane();
-        jPanel6 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         TextPaneCodigoFuente = new javax.swing.JTextPane();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        textAreaSeparacion = new javax.swing.JTextArea();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tabFaseuno = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ANALIZADOR LEXICOGRAFICO");
@@ -193,23 +194,6 @@ public class ClasePrincipal extends javax.swing.JFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        ScrollPaneAnalisisLexico.setBackground(new java.awt.Color(32, 33, 36));
-        ScrollPaneAnalisisLexico.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(93, 123, 184), 2, true));
-
-        jPanel6.setBackground(new java.awt.Color(93, 123, 184));
-        jPanel6.setPreferredSize(new java.awt.Dimension(3, 0));
-
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 3, Short.MAX_VALUE)
-        );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
         jPanel8.setBackground(new java.awt.Color(32, 33, 36));
         jPanel8.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(93, 123, 184), 2, true));
 
@@ -233,9 +217,18 @@ public class ClasePrincipal extends javax.swing.JFrame {
 
         jScrollPane1.setViewportView(TextPaneCodigoFuente);
 
-        textAreaSeparacion.setColumns(20);
-        textAreaSeparacion.setRows(5);
-        jScrollPane2.setViewportView(textAreaSeparacion);
+        tabFaseuno.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane4.setViewportView(tabFaseuno);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -251,37 +244,29 @@ public class ClasePrincipal extends javax.swing.JFrame {
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(ScrollPaneAnalisisLexico)
-                        .addGap(2, 2, 2)))
-                .addGap(562, 562, 562))
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27)
+                        .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane4))
+                .addGap(538, 538, 538))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 566, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2)
-                            .addComponent(jScrollPane1)))
-                    .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 449, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(ScrollPaneAnalisisLexico, javax.swing.GroupLayout.DEFAULT_SIZE, 402, Short.MAX_VALUE))
-                    .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 449, Short.MAX_VALUE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 519, Short.MAX_VALUE)
+                            .addComponent(jScrollPane4))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -327,6 +312,7 @@ public class ClasePrincipal extends javax.swing.JFrame {
         
         //enumera las filas del editor
         Functions.setLineNumberOnJTextComponent(TextPaneCodigoFuente);
+
         // inicializar timer para colorear lineas del codigo
         timerKeyReleased = new Timer(300, ((e) -> {
             timerKeyReleased.stop();
@@ -352,7 +338,20 @@ public class ClasePrincipal extends javax.swing.JFrame {
             timerKeyReleased.restart();
         });                
     }
-         
+     
+    private void clearFields(){
+      //llamar al metodo para limpiar todos los campos de la tabla de tokens
+      Functions.clearDataInTable(tabFaseuno);
+      //limapiar texto de otros componentes
+      //nomPanel.setText("");
+      
+      //limpiar los arrayList
+      tokens.clear();
+      errors.clear();
+      identProd.clear();
+      identificadores.clear();
+      codeHasBeenCompiled = false;
+    }    
     private void colorAnalysis(){
         
     }
@@ -360,7 +359,6 @@ public class ClasePrincipal extends javax.swing.JFrame {
     private void compile(){
         lexicalAnalysis();
         fillPaneTokens();
-        fillPaneAnalisisLexico();
         syntaticAnalysis();
         semanticAnalysis();
         printConsole();
@@ -371,13 +369,11 @@ public class ClasePrincipal extends javax.swing.JFrame {
     }
     
     private void fillPaneTokens(){
+     //forEach para recorrer todos los tokens
      tokens.forEach(token ->{
-     //   Object[] data = new Object 
+        Object[] data = new Object[]{"[ "+token.getLine()+" , "+token.getColumn()+" ]",token.getLexeme(),token.getLexicalComp()};
+     Functions.addRowDataInTable(tabFaseuno, data);
      });  
-    }
-    
-    private void fillPaneAnalisisLexico(){
-        
     }
     
     private void syntaticAnalysis(){
@@ -392,7 +388,30 @@ public class ClasePrincipal extends javax.swing.JFrame {
     }
     
     private void printConsole(){
-        
+      //variable que guardara todos los errores
+      int sizeErrors = errors.size();
+      // if que verifica si los errores son mayores a 0
+      if(sizeErrors > 0){
+          //metodo que ordenara los errores por numero de comulna y linea
+          Functions.sortErrorsByLineAndColumn(errors);
+          //variable que guardara todos los errores
+          String strErrors = "\n";
+          //recorrera con un for cada uno de los errores
+          for(ErrorLSSL error: errors){
+            //obtendra la cadena del error
+            String strError = String.valueOf(error);
+            //concatenar el valor con la cadena vacia
+            strErrors += strError + "\n";
+          }
+          //en caso de haber errores la compilacion no habra terminado
+          //jtaOutputConsole es el nombre del panel
+          //jtaOutputConsole.setText("La compilacion termino con errores...\n"+strErrors);
+          
+      }else{
+          //en caso de no haber errores la compilacion habra terminado
+          //jtaOutputConsole es el nombre del panel
+          //jtaOutputConsole.setText("Compilacion terminada...");
+      }
     }
     private void btnSelectFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectFileActionPerformed
     Scanner entrada = null;
@@ -467,15 +486,25 @@ public class ClasePrincipal extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
+       // java.awt.EventQueue.invokeLater(new Runnable() {
+        /*    public void run() {
                 new ClasePrincipal().setVisible(true);
-            }
+            }*/
+        //});
+        
+        java.awt.EventQueue.invokeLater(() -> {
+           try {
+               UIManager.setLookAndFeel(new FlatIntelliJLaf());
+               
+               new ClasePrincipal().setVisible(true);
+           } catch(UnsupportedLookAndFeelException ex){
+               Logger.getLogger(ClasePrincipal.class.getName()).log(Level.SEVERE, null, ex);
+           }
         });
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JScrollPane ScrollPaneAnalisisLexico;
     private javax.swing.JTextPane TextPaneCodigoFuente;
     private javax.swing.JButton btnSelectFile;
     private javax.swing.JLabel jLabel1;
@@ -487,11 +516,10 @@ public class ClasePrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea textAreaSeparacion;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JTable tabFaseuno;
     // End of variables declaration//GEN-END:variables
 }
