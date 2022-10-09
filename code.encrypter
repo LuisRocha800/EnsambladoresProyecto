@@ -1,8 +1,26 @@
-data segment
+;codigo uno ejemplo
 
-.data
+.stack
 
-ax
+ends
 
-bx
+code segment
+varuno db ?
+ends
 
+
+.code segment
+
+mov ah,09h
+lea dx,varuno
+int 21h
+
+0101
+
+1111b
+
+10
+
+10h
+
+ends

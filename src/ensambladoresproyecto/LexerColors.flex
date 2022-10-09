@@ -39,7 +39,7 @@ registro = "AX"|"BX"
 
 /* Coloreara instrucciones de color azul*/
 /* Instrucciones */
-{registro} {return textColor(yychar, yylength(), new Color(65, 165, 238));}
+{registro} { return textColor(yychar, yylength(), new Color(65, 165, 238)); }
 
 /* si un elemento no es agrupado se llama este metodo*/
 . { /* Ignorar */ }

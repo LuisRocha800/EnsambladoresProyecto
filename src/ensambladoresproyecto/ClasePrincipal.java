@@ -591,11 +591,13 @@ public class ClasePrincipal extends javax.swing.JFrame {
         }
               
     }
+     colorAnalysis();
     
     }//GEN-LAST:event_btnSelectFileActionPerformed
 
     private void btnCompilarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompilarActionPerformed
       compile();
+      
     }//GEN-LAST:event_btnCompilarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
