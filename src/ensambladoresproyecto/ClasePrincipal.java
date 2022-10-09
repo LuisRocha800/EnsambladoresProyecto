@@ -381,6 +381,8 @@ public class ClasePrincipal extends javax.swing.JFrame {
 
     private void init(){
         //definir titulo que se mostrara la ventana
+        this.setResizable(false);
+        TextPaneCodigoFuente.setEditable(false);
         title = "ANALIZADOR LEXICOGRAFICO";
         //mostrar ventana en centro de la pantalla
         setLocationRelativeTo(null);

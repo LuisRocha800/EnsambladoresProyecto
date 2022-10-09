@@ -19,6 +19,7 @@ simboloseis = "CLC"|"CMPSW"|"INTO"|"STI"|"AAM"|"CLI"|"DEC"|"DIV"|"MUL"|"IDIV"|"L
 simbolosiete = "MOVSB"|"PUSHA"|"STD"|"DAA"|"LAHF"|"NOP"|"IMUL"|"INC"|"INT"|"POP"|"ROR"|"SUB"|"TEST"|"LEA"|"JNAE"|"JNE"|"JNC"|"JNL"|"JZ"|"LOOPNZ"
 simboloocho = "AAD"|"CLD"|"CWD"|"RET"|"STOSB"|"AAS"|"NEG"|"NOT"|"IDIV"|"PUSH"|"XOR"|"AND"|"RCL"|"ADC"|"JB"|"JE"|"JCXZ"|"JL"|"JLE"|"JNB"
 simbolonueve = "IRET"|"MOVSW"|"PUSHF"|"CMC"|"DAS"|"LODSB"|"DEC"|"IMUL"|"NEG"|"NOT"|"LEA"|"OR"|"CMP"|"XCHG"|"JO"|"LOOP"|"JNLE"|"JNZ"|"JNG"|"JNO"
+simbolodiez = "include"
 
 stack_segment = ".stack"|".stack segment"|"stack segment"
 data_segment = ".data"|".data segment"|"data segment"
@@ -75,6 +76,10 @@ dup = "dup" |"DUP"
 
 /* ignora los comentarios*/
 ";".* { /* Ignorar */ }
+
+"'".* { return token(yytext(), "Simbolo", yyline, yycolumn); }
+
+{simbolodiez} { return token(yytext(), "Simbolo", yyline, yycolumn); }
 
 {db} { return token(yytext(), "DByte", yyline, yycolumn); }
 {dw} { return token(yytext(), "DWord", yyline, yycolumn); }
