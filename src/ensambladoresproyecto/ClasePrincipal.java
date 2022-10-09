@@ -552,16 +552,21 @@ public class ClasePrincipal extends javax.swing.JFrame {
           //jtaOutputConsole.setText("Compilacion terminada...");
       }
     }
+    
+    
     private void btnSelectFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectFileActionPerformed
     Scanner entrada = null;
     boolean commillas=false,primercomilla=false;
     boolean decimal,noinicianumero,entero,corchete;
     
     
+    
     //Bloquea la edicion del JTextArea
     TextPaneCodigoFuente.setEditable(false);    
     //Creamos el objeto JFileChooser
     JFileChooser Sfile = new JFileChooser(); 
+    
+    Sfile.setAcceptAllFileFilterUsed(false);
     
     FileNameExtensionFilter filtro = new FileNameExtensionFilter("*.asm","asm");
     
@@ -570,11 +575,15 @@ public class ClasePrincipal extends javax.swing.JFrame {
     int SeleccionFile = Sfile.showOpenDialog(this);
     
     //Si el usuario teclea aceptar
+  
     if (SeleccionFile == JFileChooser.APPROVE_OPTION){
-        
+      
+       
+
         //Seleccionar el archivo
         File archivo = Sfile.getSelectedFile();
-        
+ 
+
         //Escribe el contenido del archivo seleccionado en el JTextArea
         TextPaneCodigoFuente.setText(archivo.getAbsolutePath());
         
@@ -592,6 +601,7 @@ public class ClasePrincipal extends javax.swing.JFrame {
             e.printStackTrace();
         }
               
+    
     }
      colorAnalysis();
     
