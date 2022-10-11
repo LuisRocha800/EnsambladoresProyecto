@@ -44,7 +44,7 @@ comillasdos = \'|\"
 
 dupuno = ({dup} {corchete_abre} .* {corchete_cierra})
 
-mensajeuno = ({comillas} {comillasdos})
+mensaje = ({comillas} {comillasdos})
 
 
 corchete_abre = "("
@@ -105,7 +105,7 @@ corchete_cierra = ")"
 {dw} { return token(yytext(), "DWord", yyline, yycolumn); }
 
 
-{mensajeuno} { return token(yytext(), "Variable", yyline, yycolumn); }
+{mensaje} { return token(yytext(), "Variable", yyline, yycolumn); }
 
 {dupuno} { return token(yytext(), "Pseudoinstruccion", yyline, yycolumn); }
 
