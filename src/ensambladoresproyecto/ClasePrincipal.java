@@ -9,6 +9,8 @@ import compilerTools.Production;
 import compilerTools.TextColor;
 import compilerTools.Token;
 import java.awt.Color;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
@@ -49,6 +51,12 @@ public class ClasePrincipal extends javax.swing.JFrame {
     private HashMap<String, String> identificadores;
     private boolean codeHasBeenCompiled = false;
     
+    //cambiar icono de java
+    @Override
+    public Image getIconImage(){        
+        Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("icon.png"));
+        return retValue;        
+    }
     
     
     /**
@@ -57,12 +65,14 @@ public class ClasePrincipal extends javax.swing.JFrame {
     public ClasePrincipal() {
         initComponents();
         init();
+        //setIconImage(getIconImage());
         modelo=new DefaultTableModel();
         modelo.addColumn("COLUMNA / FILA");
         modelo.addColumn("SEPARACION DE ELEMENTOS");
         modelo.addColumn("ANALISIS LEXICO");
         this.tabFaseuno.setModel(modelo);
-         TextPaneCodigoFuente.setEditable(false); 
+         TextPaneCodigoFuente.setEditable(false);
+        
     }
 
     /**
@@ -418,6 +428,8 @@ public class ClasePrincipal extends javax.swing.JFrame {
            }
         });*/
         
+
+        
         //enumera las filas del editor
         Functions.setLineNumberOnJTextComponent(TextPaneCodigoFuente);
 
@@ -446,7 +458,9 @@ public class ClasePrincipal extends javax.swing.JFrame {
             timerKeyReleased.restart();
         });                
     }
-     
+    
+    
+    
     private void clearFields(){
       //llamar al metodo para limpiar todos los campos de la tabla de tokens
       TextPaneCodigoFuente.setText("");

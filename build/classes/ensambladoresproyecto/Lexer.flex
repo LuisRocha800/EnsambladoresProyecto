@@ -25,17 +25,24 @@ stack_segment = ".stack"|".stack segment"|"stack segment"
 data_segment = ".data"|".data segment"|"data segment"
 code_segment = ".code"|".code segment"|"code segment"
 
+delimitador = "$"
+
 numero_decimal = ("(-"{Digito}+")")|{Digito}+
 numero_hexadecimal = [0-9a-fA-F]+H
 numero_binario = [0-1]+B
 
-espacio=[ \t\r\n,]+
+espacio=[ \t\r\n]+
 comentario = ";"
+coma = ","
 
 db = "db"|"DB"
 dw = "dw"|"DW"
-dup = "dup" |"DUP"
+dup = "dup"
 
+dupuno = ({dup}.*)
+
+corchete_abre = "("
+corchete_cierra = ")"
 
 %{
     private Token token(String lexeme, String lexicalComp, int line, int column){
@@ -54,6 +61,8 @@ dup = "dup" |"DUP"
 
 /* Espacios en blanco */
 {espacio} { /* Ignorar */}
+
+{coma} {/* Ignorar */ }
 
 /* Instrucciones */
 {registro} {return token(yytext(), "Registro", yyline, yycolumn);}
@@ -76,17 +85,20 @@ dup = "dup" |"DUP"
 {numero_hexadecimal} { return token(yytext(), "Numero Hexadecimal", yyline, yycolumn); } 
 {numero_binario} { return token(yytext(), "Numero Binario", yyline, yycolumn); } 
 
+{corchete_abre} {/* Ignorar */ }
+{corchete_cierra} { /* Ignorar */}
+
 /* ignora los comentarios*/
 ";".* { /* Ignorar */ }
 
-"'".* { return token(yytext(), "Simbolo", yyline, yycolumn); }
+{delimitador} {return token(yytext(), "Simbolo", yyline, yycolumn);}
 
 {simbolodiez} { return token(yytext(), "Simbolo", yyline, yycolumn); }
 
 {db} { return token(yytext(), "DByte", yyline, yycolumn); }
 {dw} { return token(yytext(), "DWord", yyline, yycolumn); }
-{dup} { return token(yytext(), "Dup", yyline, yycolumn); }
 
+{dupuno} { return token(yytext(), "Pseudoinstruccion", yyline, yycolumn); }
 /* si un elemento no es agrupado se llama este metodo */
 . { return token(yytext(), "Error", yyline, yycolumn); }
 
