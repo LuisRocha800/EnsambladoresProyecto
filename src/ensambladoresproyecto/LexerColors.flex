@@ -84,6 +84,8 @@ dup = "dup" |"DUP"
 
 {simbolodiez} { return textColor(yychar, yylength(), new Color(40, 253, 35)); }
 
+/*{Identificador} { return textColor(yychar, yylength(), new Color(255, 255, 255)); }*/
+
 {db} { return textColor(yychar, yylength(), new Color(255, 255, 255)); }
 {dw} { return textColor(yychar, yylength(), new Color(255, 255, 255)); }
 {dup} { return textColor(yychar, yylength(), new Color(255, 255, 255)); }

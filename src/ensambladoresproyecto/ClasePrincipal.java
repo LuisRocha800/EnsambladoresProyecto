@@ -65,16 +65,29 @@ public class ClasePrincipal extends javax.swing.JFrame {
     public ClasePrincipal() {
         initComponents();
         init();
-        //setIconImage(getIconImage());
-        modelo=new DefaultTableModel();
-        modelo.addColumn("COLUMNA / FILA");
-        modelo.addColumn("SEPARACION DE ELEMENTOS");
-        modelo.addColumn("ANALISIS LEXICO");
-        this.tabFaseuno.setModel(modelo);
-         TextPaneCodigoFuente.setEditable(false);
-        
-    }
+        propTable();
+        //setIconImage(getIconImage())
+        TextPaneCodigoFuente.setEditable(false);
 
+
+                         
+    }
+    
+    private void propTable()
+    {
+        String r[] = {"COLUMNA / FILA","SEPARACION DE ELEMENTOS","ANALISIS LEXICO"};
+        
+        DefaultTableModel modelo = new DefaultTableModel(null, r){
+           
+         public boolean isCellEditable(int filas, int columnas) {
+              if(columnas==3){
+                  return true;
+              }else{
+                  return false;
+              }}
+        };
+        tabFaseuno.setModel(modelo);  
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -434,7 +447,7 @@ public class ClasePrincipal extends javax.swing.JFrame {
         Functions.setLineNumberOnJTextComponent(TextPaneCodigoFuente);
 
         // inicializar timer para colorear lineas del codigo
-        timerKeyReleased = new Timer(300, ((e) -> {
+        timerKeyReleased = new Timer(20, ((e) -> {
             timerKeyReleased.stop();
             colorAnalysis();
         }));

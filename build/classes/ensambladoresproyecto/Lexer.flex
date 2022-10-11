@@ -24,6 +24,7 @@ simbolodiez = "include"|"@data"
 stack_segment = ".stack"|".stack segment"|"stack segment"
 data_segment = ".data"|".data segment"|"data segment"
 code_segment = ".code"|".code segment"|"code segment"
+model = ".model small"
 
 delimitador = "$"
 
@@ -41,15 +42,30 @@ dup = "dup"
 
 comillas = \'.*|\".*
 comillasdos = \'|\"
+comillassimples = \'
+comillasdobles = \"
 
-dupuno = ({dup} {corchete_abre} .* {corchete_cierra})
+dupdec = ({dup} {corchete_abre} {numero_decimal} {corchete_cierra})
+dupbin = ({dup} {corchete_abre} {numero_binario} {corchete_cierra})
+duphex = ({dup} {corchete_abre} {numero_hexadecimal} {corchete_cierra})
+dupsin = ({dup} {corchete_abre} {mensaje} {corchete_cierra})
+
 
 mensaje = ({comillas} {comillasdos})
 
+dospuntos = ":"
+
+eti = ({Identificador} {dospuntos})
 
 corchete_abre = "("
 corchete_cierra = ")"
 
+parentesis_abre = "["
+parentesis_cierra = "]"
+
+parentesis = ({ parentesis_abre } .* { parentesis_cierra })
+
+delim = ( {comillassimples} {delimitador} {comillassimples} )
 %{
     private Token token(String lexeme, String lexicalComp, int line, int column){
     return new Token(lexeme, lexicalComp, line+1, column+1);
@@ -72,7 +88,7 @@ corchete_cierra = ")"
 
 /* Instrucciones */
 {registro} {return token(yytext(), "Registro", yyline, yycolumn);}
-{instruccion} { return token(yytext(), "Pseudoinstruccion", yyline, yycolumn); }
+{instruccion} { return token(yytext(), "Instruccion", yyline, yycolumn); }
 {simbolouno} { return token(yytext(), "Simbolo", yyline, yycolumn); }
 {simbolodos} { return token(yytext(), "Simbolo", yyline, yycolumn); }
 {simbolotres} { return token(yytext(), "Simbolo", yyline, yycolumn); }
@@ -86,28 +102,35 @@ corchete_cierra = ")"
 {stack_segment} { return token(yytext(), "Pseudoinstruccion", yyline, yycolumn); }
 {data_segment} { return token(yytext(), "Pseudoinstruccion", yyline, yycolumn); }
 {code_segment} { return token(yytext(), "Pseudoinstruccion", yyline, yycolumn); }
+{model} {return token(yytext(), "Pseudoinstruccion", yyline, yycolumn);}
 
 {numero_decimal} { return token(yytext(), "Numero Decimal", yyline, yycolumn); } 
 {numero_hexadecimal} { return token(yytext(), "Numero Hexadecimal", yyline, yycolumn); } 
 {numero_binario} { return token(yytext(), "Numero Binario", yyline, yycolumn); } 
 
-{corchete_abre} {/* Ignorar */ }
-{corchete_cierra} { /* Ignorar */}
 
 /* ignora los comentarios*/
 ";".* { /* Ignorar */ }
 
-{delimitador} {return token(yytext(), "Simbolo", yyline, yycolumn);}
+{delim} {return token(yytext(), "Simbolo", yyline, yycolumn);}
 
 {simbolodiez} { return token(yytext(), "Simbolo", yyline, yycolumn); }
 
-{db} { return token(yytext(), "DByte", yyline, yycolumn); }
-{dw} { return token(yytext(), "DWord", yyline, yycolumn); }
+{db} { return token(yytext(), "Pseudoinstruccion", yyline, yycolumn); }
+{dw} { return token(yytext(), "Pseudoinstruccion", yyline, yycolumn); }
 
+{Identificador} { return token(yytext(), "Simbolo", yyline, yycolumn); }
 
-{mensaje} { return token(yytext(), "Variable", yyline, yycolumn); }
+{mensaje} { return token(yytext(), "Constante", yyline, yycolumn); }
 
-{dupuno} { return token(yytext(), "Pseudoinstruccion", yyline, yycolumn); }
+{parentesis} {return token(yytext(), "Simbolo", yyline, yycolumn);}
+
+{dupdec} { return token(yytext(), "Pseudoinstruccion y constante decimal", yyline, yycolumn); }
+{dupbin} { return token(yytext(), "Pseudoinstruccion y constante binario", yyline, yycolumn); }
+{duphex} { return token(yytext(), "Pseudoinstruccion y constante hexadecimal", yyline, yycolumn); }
+{dupsin} { return token(yytext(), "Pseudoinstruccion", yyline, yycolumn); }
+
+{eti} {return token(yytext(), "Etiqueta", yyline, yycolumn);}
 
 /* si un elemento no es agrupado se llama este metodo */
 . { return token(yytext(), "Error", yyline, yycolumn); }
