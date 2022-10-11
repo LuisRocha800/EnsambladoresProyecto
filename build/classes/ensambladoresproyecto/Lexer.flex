@@ -19,7 +19,7 @@ simboloseis = "CLC"|"CMPSW"|"INTO"|"STI"|"AAM"|"CLI"|"DEC"|"DIV"|"MUL"|"IDIV"|"L
 simbolosiete = "MOVSB"|"PUSHA"|"STD"|"DAA"|"LAHF"|"NOP"|"IMUL"|"INC"|"INT"|"POP"|"ROR"|"SUB"|"TEST"|"LEA"|"JNAE"|"JNE"|"JNC"|"JNL"|"JZ"|"LOOPNZ"
 simboloocho = "AAD"|"CLD"|"CWD"|"RET"|"STOSB"|"AAS"|"NEG"|"NOT"|"IDIV"|"PUSH"|"XOR"|"AND"|"RCL"|"ADC"|"JB"|"JE"|"JCXZ"|"JL"|"JLE"|"JNB"
 simbolonueve = "IRET"|"MOVSW"|"PUSHF"|"CMC"|"DAS"|"LODSB"|"DEC"|"IMUL"|"NEG"|"NOT"|"LEA"|"OR"|"CMP"|"XCHG"|"JO"|"LOOP"|"JNLE"|"JNZ"|"JNG"|"JNO"
-simbolodiez = "include"
+simbolodiez = "include"|"@data"
 
 stack_segment = ".stack"|".stack segment"|"stack segment"
 data_segment = ".data"|".data segment"|"data segment"
@@ -39,7 +39,13 @@ db = "db"|"DB"
 dw = "dw"|"DW"
 dup = "dup"
 
-dupuno = ({dup}.*)
+comillas = \'.*|\".*
+comillasdos = \'|\"
+
+dupuno = ({dup} {corchete_abre} .* {corchete_cierra})
+
+mensajeuno = ({comillas} {comillasdos})
+
 
 corchete_abre = "("
 corchete_cierra = ")"
@@ -98,7 +104,11 @@ corchete_cierra = ")"
 {db} { return token(yytext(), "DByte", yyline, yycolumn); }
 {dw} { return token(yytext(), "DWord", yyline, yycolumn); }
 
+
+{mensajeuno} { return token(yytext(), "Variable", yyline, yycolumn); }
+
 {dupuno} { return token(yytext(), "Pseudoinstruccion", yyline, yycolumn); }
+
 /* si un elemento no es agrupado se llama este metodo */
 . { return token(yytext(), "Error", yyline, yycolumn); }
 

@@ -33,6 +33,8 @@ numero_binario = [0-1]+B
 espacio=[ \t\r\n,]+
 comentario = ";"
 
+comillas = "'"|\"
+
 db = "db"|"DB"
 dw = "dw"|"DW"
 dup = "dup" |"DUP"
@@ -54,6 +56,8 @@ dup = "dup" |"DUP"
 
 /* Espacios en blanco */
 {espacio} { /* Ignorar */}
+
+
 
 /* Instrucciones */
 {registro} { return textColor(yychar, yylength(), new Color(237, 87, 98)); }
@@ -83,6 +87,8 @@ dup = "dup" |"DUP"
 {db} { return textColor(yychar, yylength(), new Color(255, 255, 255)); }
 {dw} { return textColor(yychar, yylength(), new Color(255, 255, 255)); }
 {dup} { return textColor(yychar, yylength(), new Color(255, 255, 255)); }
+
+
 
 /* si un elemento no es agrupado se llama este metodo*/
 . { /* Ignorar */ }
