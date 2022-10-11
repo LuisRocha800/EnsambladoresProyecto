@@ -35,6 +35,8 @@ comentario = ";"
 db = "db"|"DB"
 dw = "dw"|"DW"
 dup = "dup" |"DUP"
+
+
 %{
     private Token token(String lexeme, String lexicalComp, int line, int column){
     return new Token(lexeme, lexicalComp, line+1, column+1);
