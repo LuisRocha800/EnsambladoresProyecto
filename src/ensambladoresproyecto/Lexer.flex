@@ -25,8 +25,11 @@ stack_segment = ".stack"|".stack segment"|"stack segment"
 data_segment = ".data"|".data segment"|"data segment"
 code_segment = ".code"|".code segment"|"code segment"
 model = ".model small"
+byte_ptr = "byte ptr"
+word_ptr = "word ptr"
 
 delimitador = "$"
+interrogacion = "?"
 
 numero_decimal = ("(-"{Digito}+")")|{Digito}+
 numero_hexadecimal = [0-9a-fA-F]+H
@@ -98,6 +101,9 @@ delim = ( {comillassimples} {delimitador} {comillassimples} )
 {simbolosiete} { return token(yytext(), "Simbolo", yyline, yycolumn); }
 {simboloocho} { return token(yytext(), "Simbolo", yyline, yycolumn); }
 {simbolonueve} { return token(yytext(), "Simbolo", yyline, yycolumn); }
+{interrogacion} { return token(yytext(), "Simbolo", yyline, yycolumn); }
+{byte_ptr} {return token(yytext(), "Simbolo", yyline, yycolumn);}
+{word_ptr} {return token(yytext(), "Simbolo", yyline, yycolumn);}
 
 {stack_segment} { return token(yytext(), "Pseudoinstruccion", yyline, yycolumn); }
 {data_segment} { return token(yytext(), "Pseudoinstruccion", yyline, yycolumn); }
