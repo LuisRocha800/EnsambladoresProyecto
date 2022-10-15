@@ -540,7 +540,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         //definir titulo que se mostrara la ventana
         this.setResizable(false);
        // TextPaneCodigoFuente.setEditable(false);
-        titulo = "ANALIZADOR LEXICOGRAFICO";
+        titulo = "ANALIZADOR LEXICOGRAFICO [PRINCIPAL]";
         //mostrar ventana en centro de la pantalla
         setLocationRelativeTo(null);
         //concatenar titulo a la ventana
@@ -679,15 +679,17 @@ public class FramePrincipal extends javax.swing.JFrame {
                  
                 }else{
                     tokensAsm.add(token);
-                    consola();  
+                    consola(); 
+                    
                 }
-
             }}
         } catch (FileNotFoundException ex) {
             System.out.println("El archivo no pudo ser encontrado... " + ex.getMessage());
         } catch (IOException ex) {
             System.out.println("Error al escribir en el archivo... " + ex.getMessage());
-        }        
+        }
+
+        
     }
     
     
@@ -799,7 +801,12 @@ public class FramePrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSelectFileActionPerformed
 
     private void btnCompilarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompilarActionPerformed
-      compilar();   
+      compilar();
+            if(tokensAsm == null){
+                }else{
+                 FrameAnalisisSintaticoySemantico sin = new FrameAnalisisSintaticoySemantico();
+                 sin.setVisible(true);   
+                }
     }//GEN-LAST:event_btnCompilarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed

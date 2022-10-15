@@ -25,19 +25,61 @@ simbolodiez = "include"
 stack_segment = ".stack"|".stack segment"|"stack segment"
 data_segment = ".data"|".data segment"|"data segment"
 code_segment = ".code"|".code segment"|"code segment"
+model = ".model small"
+ends = "ENDS"
+byte_ptr = "byte ptr"
+word_ptr = "word ptr"
+
+delimitador = "$"
+interrogacion = "?"
+mas = "+"
+menos = "-"
 
 numero_decimal = ("(-"{Digito}+")")|{Digito}+
 numero_hexadecimal = [0-9a-fA-F]+H
 numero_binario = [0-1]+B
 
-espacio=[ \t\r\n,]+
+espacio=[ \t\r\n]+
+espaciodos = " "
 comentario = ";"
-
-comillas = "'"|\"
+coma = ","
 
 db = "db"|"DB"
 dw = "dw"|"DW"
-dup = "dup" |"DUP"
+dup = "dup"
+
+dupdec = ({dup} {corchete_abre} {numero_decimal} {corchete_cierra})
+dupbin = ({dup} {corchete_abre} {numero_binario} {corchete_cierra})
+duphex = ({dup} {corchete_abre} {numero_hexadecimal} {corchete_cierra})
+dupsin = ({dup} {corchete_abre} {mensaje} {corchete_cierra})
+dupdec_esp = ({dup} {espaciodos} {corchete_abre} {numero_decimal} {corchete_cierra})
+dupbin_esp = ({dup} {espaciodos} {corchete_abre} {numero_binario} {corchete_cierra})
+duphex_esp = ({dup} {espaciodos} {corchete_abre} {numero_hexadecimal} {corchete_cierra})
+dupsin_esp = ({dup} {espaciodos} {corchete_abre} {mensaje} {corchete_cierra})
+
+mensaje = ({comillas} {comillasdos})
+           
+
+dospuntos = ":"
+
+/*eti = ({Identificador} {dospuntos})*/
+
+corchete_abre = "("
+corchete_cierra = ")"
+
+parentesis_abre = "["
+parentesis_cierra = "]"
+
+parentesis = ({parentesis_abre} {parentesis_cierra})
+
+parentesis_con_registros = ({parentesis_abre} {registro} {parentesis_cierra})
+parentesis_con_registros_y_digitos = ({parentesis_abre} {registro} {mas} {numero_decimal} {parentesis_cierra})
+parentesis_con_identificador_y_registro = ({parentesis_abre} {Identificador} {mas} {registro} {parentesis_cierra})
+parentesis_con_identificador_y_registro2 = ({parentesis_abre} {Identificador} {espacio} {mas} {espacio} {registro} {parentesis_cierra})
+parentesis_con_registros_digitos = ({parentesis_abre} {registro} {mas} {registro} {mas} {numero_decimal} {parentesis_cierra})
+parentesis_con_registros_digitos2 = ({parentesis_abre} {registro} {espaciodos} {mas} {espaciodos} {registro} {espaciodos} {mas} {espaciodos} {numero_decimal} {parentesis_cierra})
+
+delim = ( {comillassimples} {delimitador} {comillassimples} )
 
 %{
     private TextColor textColor(long start, int size, Color color){
@@ -57,20 +99,23 @@ dup = "dup" |"DUP"
 /* Espacios en blanco */
 {espacio} { /* Ignorar */}
 
-
+{coma} {/* Ignorar */ }
 
 /* Instrucciones */
-{registro} { return textColor(yychar, yylength(), new Color(237, 87, 98)); }
+{registro} {return textColor(yychar, yylength(), new Color(237, 87, 98));}
 {instruccion} { return textColor(yychar, yylength(), new Color(255, 196, 72)); }
-{simbolouno} { return textColor(yychar, yylength(), new Color(40, 253, 35)); }
+{simbolouno} { return textColor(yychar, yylength(), new Color(40, 253, 35));}
 {simbolodos} { return textColor(yychar, yylength(), new Color(40, 253, 35)); }
 {simbolotres} { return textColor(yychar, yylength(), new Color(40, 253, 35)); }
 {simbolocuatro} { return textColor(yychar, yylength(), new Color(40, 253, 35)); }
-{simbolocinco} { return textColor(yychar, yylength(), new Color(40, 253, 35)); }
+{simbolocinco} { return textColor(yychar, yylength(), new Color(40, 253, 35));}
 {simboloseis} { return textColor(yychar, yylength(), new Color(40, 253, 35)); }
 {simbolosiete} { return textColor(yychar, yylength(), new Color(40, 253, 35)); }
 {simboloocho} { return textColor(yychar, yylength(), new Color(40, 253, 35)); }
-{simbolonueve} { return textColor(yychar, yylength(), new Color(40, 253, 35)); }
+{simbolonueve} { return textColor(yychar, yylength(), new Color(40, 253, 35));}
+{interrogacion} { return textColor(yychar, yylength(), new Color(40, 253, 35)); }
+{byte_ptr} {return textColor(yychar, yylength(), new Color(40, 253, 35));}
+{word_ptr} {return textColor(yychar, yylength(), new Color(40, 253, 35));}
 
 {stack_segment} { return textColor(yychar, yylength(), new Color(195, 17, 75)); }
 {data_segment} { return textColor(yychar, yylength(), new Color(195, 17, 75)); }
