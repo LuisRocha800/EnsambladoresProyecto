@@ -194,7 +194,9 @@
                       <Component id="jPanel11" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnGuardarComo" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="411" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="btnAcercaDe" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="339" max="-2" attributes="0"/>
                       <Component id="jPanel6" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
@@ -205,7 +207,6 @@
                   <Group type="102" attributes="0">
                       <EmptySpace max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="jPanel6" min="-2" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="jPanel9" max="32767" attributes="0"/>
                               <Component id="btnSelectFile" max="32767" attributes="0"/>
@@ -217,7 +218,9 @@
                               <Component id="btnGuardar" alignment="1" max="32767" attributes="0"/>
                               <Component id="jPanel11" alignment="0" max="32767" attributes="0"/>
                               <Component id="btnGuardarComo" alignment="1" max="32767" attributes="0"/>
+                              <Component id="btnAcercaDe" alignment="1" max="32767" attributes="0"/>
                           </Group>
+                          <Component id="jPanel6" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                   </Group>
@@ -510,6 +513,19 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGuardarComoActionPerformed"/>
               </Events>
             </Component>
+            <Component class="javax.swing.JButton" name="btnAcercaDe">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="43" green="40" red="3c" type="rgb"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/ensambladoresproyecto/group.png"/>
+                </Property>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAcercaDeActionPerformed"/>
+              </Events>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="jPanel5">
@@ -554,7 +570,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jLabel5" pref="676" max="32767" attributes="0"/>
+                      <Component id="jLabel5" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
