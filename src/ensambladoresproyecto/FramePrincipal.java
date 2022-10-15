@@ -9,6 +9,7 @@ import compilerTools.Production;
 import compilerTools.TextColor;
 import compilerTools.Token;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -35,50 +36,43 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
  * @author Luis Angel Rocha
  */
-public class ClasePrincipal extends javax.swing.JFrame {
-    DefaultTableModel modelo;
-    private String title;
+public class FramePrincipal extends javax.swing.JFrame {
+    DefaultTableModel modeloDeTabla;
+    private String titulo;
     private Directory Directorio;
-    private ArrayList<Token> tokens;
-    private ArrayList<ErrorLSSL> errors;
-    private ArrayList<TextColor> textsColor;
-    private Timer timerKeyReleased;
-    private ArrayList<Production> identProd;
-    private HashMap<String, String> identificadores;
-    private boolean codeHasBeenCompiled = false;
-    
-    //cambiar icono de java
-    @Override
-    public Image getIconImage(){        
-        Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("icon.png"));
-        return retValue;        
-    }
-    
-    
+    public ArrayList<Token> tokensAsm = new ArrayList<>();
+    private ArrayList<ErrorLSSL> errors = new ArrayList<>();
+    private ArrayList<TextColor> textoConColor = new ArrayList<>();
+    private Timer Temporalizador;
+    private ArrayList<Production> identProd = new ArrayList<>();
+    private HashMap<String, String> identificadores = new HashMap<>();
+    private boolean codeHasBeenCompiled = false;    
     /**
      * Creates new form M
      */
-    public ClasePrincipal() {
+    public FramePrincipal() {
         initComponents();
         init();
         propTable();
         //setIconImage(getIconImage())
-       // TextPaneCodigoFuente.setEditable(false);
-
+        Consola.setEditable(false);
+       //cambiar logo de java
+       setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("code.png")));
 
                          
     }
     
     private void propTable()
     {
-        String r[] = {"COLUMNA / FILA","SEPARACION DE ELEMENTOS","ANALISIS LEXICO"};
+        String datos[] = {"SEPARACION DE ELEMENTOS","ANALISIS LEXICO","L/C"};
         
-        DefaultTableModel modelo = new DefaultTableModel(null, r){
+        DefaultTableModel modelo = new DefaultTableModel(null, datos){
            
          public boolean isCellEditable(int filas, int columnas) {
               if(columnas==3){
@@ -87,8 +81,45 @@ public class ClasePrincipal extends javax.swing.JFrame {
                   return false;
               }}
         };
-        tabFaseuno.setModel(modelo);  
+        tablaDeFaseUno.setModel(modelo);
+        
+        TableColumn columna0, columna2;
+        columna0 = tablaDeFaseUno.getColumnModel().getColumn(0);
+        columna2 = tablaDeFaseUno.getColumnModel().getColumn(2);
+        columna0.setPreferredWidth(200);
+        columna0.setMaxWidth(200);
+        columna0.setMinWidth(200);
+        columna2.setPreferredWidth(100);
+        columna2.setMaxWidth(100);
+        columna2.setMinWidth(100);
+
     }
+    
+    public void consola(){                 
+          //variable que guardara todos los tokens
+          String tkns = "";
+          //recorrera con un for cada uno de los tokens
+          for(Token token: tokensAsm){    
+             if(token.getLexicalComp().equals("Elemento no identificado")){ 
+            //obtendra la cadena del token
+            String tkn = String.valueOf(token);
+            //concatenar el valor con la cadena vacia
+            tkns += tkn;           
+          }       
+        }
+              if(tkns.length() <= 0){
+                 Consola.setText("RESULTADO DEL ANALISIS LEXICO\n"+ "-----------------------------\n"
+                              + "Status: "+ "Correcto...\n"+
+                                "\n");       
+             }else{
+                 Consola.setText("RESULTADO DEL ANALISIS LEXICO\n"+ "-----------------------------\n"
+                              + "Status: "+ "Hay elementos no identificados...\n"+
+                                "\n"+tkns);
+             
+            }
+              
+      }    
+  
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -122,11 +153,13 @@ public class ClasePrincipal extends javax.swing.JFrame {
         jPanel8 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        TextPaneCodigoFuente = new javax.swing.JTextPane();
+        PanelParaCodigoFuente = new javax.swing.JTextPane();
         jScrollPane4 = new javax.swing.JScrollPane();
-        tabFaseuno = new javax.swing.JTable();
+        tablaDeFaseUno = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         lblRuta = new javax.swing.JTextPane();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        Consola = new javax.swing.JTextPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ANALIZADOR LEXICOGRAFICO");
@@ -392,15 +425,15 @@ public class ClasePrincipal extends javax.swing.JFrame {
             .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
         );
 
-        TextPaneCodigoFuente.setBackground(new java.awt.Color(60, 64, 67));
-        TextPaneCodigoFuente.setFont(new java.awt.Font("Poppins", 1, 12)); // NOI18N
-        TextPaneCodigoFuente.setForeground(new java.awt.Color(255, 255, 255));
-        jScrollPane1.setViewportView(TextPaneCodigoFuente);
+        PanelParaCodigoFuente.setBackground(new java.awt.Color(60, 64, 67));
+        PanelParaCodigoFuente.setFont(new java.awt.Font("Poppins", 1, 12)); // NOI18N
+        PanelParaCodigoFuente.setForeground(new java.awt.Color(255, 255, 255));
+        jScrollPane1.setViewportView(PanelParaCodigoFuente);
 
-        tabFaseuno.setBackground(new java.awt.Color(60, 64, 67));
-        tabFaseuno.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        tabFaseuno.setForeground(new java.awt.Color(255, 255, 255));
-        tabFaseuno.setModel(new javax.swing.table.DefaultTableModel(
+        tablaDeFaseUno.setBackground(new java.awt.Color(60, 64, 67));
+        tablaDeFaseUno.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        tablaDeFaseUno.setForeground(new java.awt.Color(255, 255, 255));
+        tablaDeFaseUno.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -411,7 +444,7 @@ public class ClasePrincipal extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane4.setViewportView(tabFaseuno);
+        jScrollPane4.setViewportView(tablaDeFaseUno);
 
         lblRuta.setBackground(new java.awt.Color(60, 64, 67));
         lblRuta.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(93, 123, 184), 2, true));
@@ -419,6 +452,11 @@ public class ClasePrincipal extends javax.swing.JFrame {
         lblRuta.setForeground(new java.awt.Color(93, 123, 184));
         lblRuta.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         jScrollPane2.setViewportView(lblRuta);
+
+        Consola.setBackground(new java.awt.Color(60, 64, 67));
+        Consola.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        Consola.setForeground(new java.awt.Color(255, 255, 255));
+        jScrollPane3.setViewportView(Consola);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -440,9 +478,10 @@ public class ClasePrincipal extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 686, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 686, Short.MAX_VALUE)
+                            .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 583, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(517, 517, 517))))
         );
         jPanel1Layout.setVerticalGroup(
@@ -458,8 +497,10 @@ public class ClasePrincipal extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 148, Short.MAX_VALUE))
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 29, Short.MAX_VALUE))
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 476, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -487,14 +528,13 @@ public class ClasePrincipal extends javax.swing.JFrame {
         //definir titulo que se mostrara la ventana
         this.setResizable(false);
        // TextPaneCodigoFuente.setEditable(false);
-        title = "ANALIZADOR LEXICOGRAFICO";
+        titulo = "ANALIZADOR LEXICOGRAFICO";
         //mostrar ventana en centro de la pantalla
         setLocationRelativeTo(null);
         //concatenar titulo a la ventana
-        setTitle(title);
+        setTitle(titulo);
         //definir el panel que concatenaremos, el componente, el titulo de ventana, la extension del archivo
-        Directorio = new Directory(this,TextPaneCodigoFuente,title,".asm");
-        
+        Directorio = new Directory(this, PanelParaCodigoFuente, titulo, ".asm");
         addWindowListener(new WindowAdapter(){
            @Override
            //metodo que permitira guardar cambios si se realzaran desde el panel editor
@@ -507,67 +547,63 @@ public class ClasePrincipal extends javax.swing.JFrame {
 
         
         //enumera las filas del editor
-        Functions.setLineNumberOnJTextComponent(TextPaneCodigoFuente);
+        Functions.setLineNumberOnJTextComponent(PanelParaCodigoFuente);
 
         // inicializar timer para colorear lineas del codigo
-        timerKeyReleased = new Timer((int)(1000 * 0.1), (ActionEvent e) -> {
-            timerKeyReleased.stop();
-            colorAnalysis();
+        Temporalizador = new Timer((int)(1000 * 0.1), (ActionEvent e) -> {
+            Temporalizador.stop();
+            AnalisisDeColores();
         });
         //pone un * en la ventana cuando modifiquemos codigo en señal de que se realizo la modificacion
-        Functions.insertAsteriskInName(this, TextPaneCodigoFuente, () ->{
+        Functions.insertAsteriskInName(this, PanelParaCodigoFuente, () ->{
         //lamara metodo restart    
-            timerKeyReleased.restart();
+            Temporalizador.restart();
         });
-        
-        //inicializar ArrayList's a un ArrayList vacio
-        tokens = new ArrayList<>();
-        errors = new ArrayList<>();
-        textsColor = new ArrayList<>();
-        identProd = new ArrayList<>();
-        identificadores = new HashMap<>();
         
         //metodo para incluir un autocompletador de codigo parecido al de NetBeans
         //se activa tecleando Ctrl + Space
         Functions.setAutocompleterJTextComponent(new String[]{".stack","stack segment",".data",
-        "data segment",".code","code segment","ends"},TextPaneCodigoFuente, ()->{
-            timerKeyReleased.restart();
-        });                
+        "data segment",".code","code segment","ends"},PanelParaCodigoFuente, ()->{
+            Temporalizador.restart();
+        });
+        
+     
     }
     
     
     
-    private void clearFields(){
+    private void limpiarCampos(){
       //llamar al metodo para limpiar todos los campos de la tabla de tokens
-      TextPaneCodigoFuente.setText("");
-      Functions.clearDataInTable(tabFaseuno);      
+      PanelParaCodigoFuente.setText("");
+      Functions.clearDataInTable(tablaDeFaseUno);      
       //limpiar los arrayList
-      tokens.clear();
+      tokensAsm.clear();
       errors.clear();
       identProd.clear();
       identificadores.clear();
       lblRuta.setText("");
+      Consola.setText("");
       codeHasBeenCompiled = false;
     } 
     
-    private void colorAnalysis(){
+    private void AnalisisDeColores(){
         /* Limpiar el arreglo de colores */
-        textsColor.clear();
+        textoConColor.clear();
         /* Extraer rangos de colores */
-        LexerColors lexerColor;
+        LexerColoresPalabras lexerColor;
         try {
             File codigo = new File("color.encrypter");
             FileOutputStream output = new FileOutputStream(codigo);
-            byte[] bytesText = TextPaneCodigoFuente.getText().getBytes();
+            byte[] bytesText = PanelParaCodigoFuente.getText().getBytes();
             output.write(bytesText);
             BufferedReader entrada = new BufferedReader(new InputStreamReader(new FileInputStream(codigo), "UTF8"));
-            lexerColor = new LexerColors(entrada);
+            lexerColor = new LexerColoresPalabras(entrada);
             while (true) {
                 TextColor textColor = lexerColor.yylex();
                 if (textColor == null) {
                     break;
                 }
-                textsColor.add(textColor);
+                textoConColor.add(textColor);
             }
         } catch (FileNotFoundException ex) {
             System.out.println("El archivo no pudo ser encontrado... " + ex.getMessage());
@@ -575,31 +611,42 @@ public class ClasePrincipal extends javax.swing.JFrame {
             System.out.println("Error al escribir en el archivo... " + ex.getMessage());
         }
         //lamar metodo 
-        Functions.colorTextPane(textsColor, TextPaneCodigoFuente, new Color(255, 255, 255));
+        Functions.colorTextPane(textoConColor, PanelParaCodigoFuente, new Color(255, 255, 255));
     }
     
-    private void compile(){
-        Functions.clearDataInTable(tabFaseuno);      
-      //limpiar los arrayList
-        tokens.clear();
+    private void compilar(){
+        Functions.clearDataInTable(tablaDeFaseUno);
+        Consola.setText("");
+        //limpiar los arrayList
+        tokensAsm.clear();
         errors.clear();
         identProd.clear();
         identificadores.clear();
         codeHasBeenCompiled = false;
-        lexicalAnalysis();
+        AnalisisLexico();
         fillPaneTokens();
         syntaticAnalysis();
         semanticAnalysis();
-        printConsole();
         codeHasBeenCompiled = true;
     }
-    private void lexicalAnalysis(){
+    private void AnalisisLexico(){
      // Extraer tokens
         Lexer lexer;
         try {
+            if(PanelParaCodigoFuente.getText().length()==0){
+                 UIManager UI=new UIManager();
+                 //cambiar el tamaño de la fuente y la fuente
+                 UI.put("OptionPane.messageFont", new Font("Poppins", Font.BOLD, 14));
+                 //Cambiar color fondo y secundario
+                 UI.put("OptionPane.background", Color.decode("#202124"));
+                 UI.put("OptionPane.messageForeground", Color.decode("#5d7bb8"));
+                 UI.put("Button.background", Color.decode("#5d7bb8"));
+                 UI.put("Button.foreground", Color.decode("#202124"));
+                 JOptionPane.showMessageDialog(null, "NO HAY CODIGO EN EL EDITOR, NO HAY NADA QUE COMPILAR...", "ANALIZADOR LEXICOGRAFICO", JOptionPane.INFORMATION_MESSAGE);
+            }else{
             File codigo = new File("code.encrypter");
             FileOutputStream output = new FileOutputStream(codigo);
-            byte[] bytesText = TextPaneCodigoFuente.getText().getBytes();
+            byte[] bytesText = PanelParaCodigoFuente.getText().getBytes();
             output.write(bytesText);
             //crearemos un buffer de lectura, recibira un input de escritura, se especifica que la codificacion es UTF8
             // para que reconozca caracteres extraños
@@ -614,26 +661,48 @@ public class ClasePrincipal extends javax.swing.JFrame {
                     break;
                 }
                 // se añade el token
-                tokens.add(token);
-            }
+                 System.out.print("CONTENIDO DEL ARRAYLIST "+tokensAsm);
+                if(tokensAsm == null){
+                
+                 
+                }else{
+                    tokensAsm.add(token);
+                    consola();  
+                }
+
+            }}
         } catch (FileNotFoundException ex) {
             System.out.println("El archivo no pudo ser encontrado... " + ex.getMessage());
         } catch (IOException ex) {
             System.out.println("Error al escribir en el archivo... " + ex.getMessage());
-        } 
+        }        
     }
+    
     
     private void fillPaneTokens(){
      //forEach para recorrer todos los tokens
-     tokens.forEach(token ->{
-        Object[] data = new Object[]{"[ "+token.getLine()+" , "+token.getColumn()+" ]",token.getLexeme(),token.getLexicalComp()};
-     Functions.addRowDataInTable(tabFaseuno, data);
-     });  
+     tokensAsm.forEach(token ->{
+        Object[] data = new Object[]{token.getLexeme(),token.getLexicalComp(),"[ "+token.getLine()+" , "+token.getColumn()+" ]"};
+     Functions.addRowDataInTable(tablaDeFaseUno, data);
+     });     
+    }
+    
+    private void BuildingFunction(){
+    UIManager UI=new UIManager();
+    //cambiar el tamaño de la fuente y la fuente
+    UI.put("OptionPane.messageFont", new Font("Poppins", Font.BOLD, 14));
+    //Cambiar color fondo y secundario
+    UI.put("OptionPane.background", Color.decode("#202124"));
+    UI.put("OptionPane.messageForeground", Color.decode("#5d7bb8"));
+    UI.put("Button.background", Color.decode("#5d7bb8"));
+    UI.put("Button.foreground", Color.decode("#202124"));
+    JOptionPane.showMessageDialog(null, "FUNCION EN DESARROLLO, AUN NO DISPONIBLE...", "ANALIZADOR LEXICOGRAFICO", JOptionPane.INFORMATION_MESSAGE);
     }
     
     private void syntaticAnalysis(){
+        
       //crear objeto Grammar de la lib compilerTools 
-      Grammar gramatica = new Grammar(tokens,errors);
+      Grammar gramatica = new Grammar(tokensAsm,errors);
       
       gramatica.show();
     }
@@ -642,8 +711,8 @@ public class ClasePrincipal extends javax.swing.JFrame {
         
     }
     
-    private void printConsole(){
-      //variable que guardara todos los errores
+    private void imprimirConsola(){
+     /* //variable que guardara todos los errores
       int sizeErrors = errors.size();
       // if que verifica si los errores son mayores a 0
       if(sizeErrors > 0){
@@ -660,18 +729,19 @@ public class ClasePrincipal extends javax.swing.JFrame {
           }
           //en caso de haber errores la compilacion no habra terminado
           //jtaOutputConsole es el nombre del panel
-          //jtaOutputConsole.setText("La compilacion termino con errores...\n"+strErrors);
+          Consola.setText("La compilacion termino con errores...\n"+strErrors);
           
       }else{
           //en caso de no haber errores la compilacion habra terminado
           //jtaOutputConsole es el nombre del panel
-          //jtaOutputConsole.setText("Compilacion terminada...");
-      }
+          Consola.setText("Compilacion terminada...");
+      }*/
     }
    
     
     private void btnSelectFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectFileActionPerformed
-    //Bloquea la edicion del JTextArea
+    limpiarCampos();
+   //Bloquea la edicion del JTextArea
    // TextPaneCodigoFuente.setEditable(false);  
     lblRuta.setEditable(false);
     //Creamos el objeto JFileChooser
@@ -696,7 +766,7 @@ public class ClasePrincipal extends javax.swing.JFrame {
  
         this.lblRuta.setText(archivo.getAbsolutePath());
         //Escribe el contenido del archivo seleccionado en el JTextArea
-        TextPaneCodigoFuente.setText(archivo.getAbsolutePath());
+        PanelParaCodigoFuente.setText(archivo.getAbsolutePath());
         
         try (FileReader fileread = new FileReader(archivo)){
            String cadena = "";
@@ -706,41 +776,30 @@ public class ClasePrincipal extends javax.swing.JFrame {
                valor = fileread.read();
                
            }
-           TextPaneCodigoFuente.setText(cadena);
+           PanelParaCodigoFuente.setText(cadena);
            
         }  catch (IOException e){
             e.printStackTrace();
         }
-              
-    
-    }    
-       colorAnalysis();
+                  
+    }       
+     AnalisisDeColores();
     }//GEN-LAST:event_btnSelectFileActionPerformed
 
     private void btnCompilarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompilarActionPerformed
-      compile();
-      
+      compilar();   
     }//GEN-LAST:event_btnCompilarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
-     clearFields();
-     
+     limpiarCampos();
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-      if (getTitle().contains("*") || getTitle().equals(title)) {
-        if(Directorio.Save()){
-          clearFields();
-       }     
-      } else {
-          clearFields();
-      }
+     BuildingFunction();
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnGuardarComoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarComoActionPerformed
-            if (Directorio.SaveAs()) {
-            clearFields();
-        }
+     BuildingFunction();
     }//GEN-LAST:event_btnGuardarComoActionPerformed
 
     /**
@@ -760,14 +819,16 @@ public class ClasePrincipal extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ClasePrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FramePrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ClasePrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FramePrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ClasePrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FramePrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ClasePrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FramePrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
@@ -780,11 +841,12 @@ public class ClasePrincipal extends javax.swing.JFrame {
         
         java.awt.EventQueue.invokeLater(() -> {
            try {
-               UIManager.setLookAndFeel(new FlatIntelliJLaf());
+             
+                   UIManager.setLookAndFeel(new FlatIntelliJLaf());
                
-               new ClasePrincipal().setVisible(true);
+               new FramePrincipal().setVisible(true);
            } catch(UnsupportedLookAndFeelException ex){
-               Logger.getLogger(ClasePrincipal.class.getName()).log(Level.SEVERE, null, ex);
+               Logger.getLogger(FramePrincipal.class.getName()).log(Level.SEVERE, null, ex);
            }
            
 
@@ -793,7 +855,8 @@ public class ClasePrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextPane TextPaneCodigoFuente;
+    private javax.swing.JTextPane Consola;
+    private javax.swing.JTextPane PanelParaCodigoFuente;
     private javax.swing.JButton btnCompilar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnGuardarComo;
@@ -819,8 +882,9 @@ public class ClasePrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTextPane lblRuta;
-    private javax.swing.JTable tabFaseuno;
+    private javax.swing.JTable tablaDeFaseUno;
     // End of variables declaration//GEN-END:variables
 }

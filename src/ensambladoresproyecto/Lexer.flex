@@ -9,7 +9,7 @@ import compilerTools.Token;
 %ignorecase
 comentario = ";"
 registro = "AX"|"BX"|"CX"|"DX"|"AH"|"AL"|"BL"|"BH"|"CH"|"CL"|"DH"|"DL"|"DI"|"SI"|"BP"|"SP"|"DS"|"ES"|"SS"|"CS"
-instruccion = "STD"|"AAD"|"CLD"|"CWD"|"IRET"|"MOVSW"|"DIV"|"IMUL"|"POP"|"IDIV"|"SHL"|"XCHG"|"ADD"|"LDS"|"JNS"|"JS"|"LOOPNE"|"JAE"|"JCXZ"|"JL"|"ENDS"
+instruccion = "STD"|"AAD"|"CLD"|"CWD"|"IRET"|"MOVSW"|"DIV"|"IMUL"|"POP"|"IDIV"|"SHL"|"XCHG"|"ADD"|"LDS"|"JNS"|"JS"|"LOOPNE"|"JAE"|"JCXZ"|"JL"
 simbolouno = "AAA"|"CLC"|"CMPSW"|"INTO"|"MOVSB"|"PUSHA"|"DEC"|"IDIV"|"INT"|"NOT"|"ADC"|"CMP"|"LES"|"RCL"|"JA"|"JC"|"JGE"|"JNA"|"JNC"|"JNL"
 simbolodos = "PUSHF"|"STI"|"AAM"|"CLI"|"DAA"|"LAHF"|"MUL"|"INC"|"NEG"|"PUSH"|"MOV"|"ROR"|"SUB"|"XOR"|"JNAE"|"JNE"|"JNLE"|"JNZ"|"JZ"|"LOOPNZ"
 simbolotres = "NOP"|"RET"|"STOSB"|"AAS"|"CMC"|"DAS"|"DEC"|"IDIV"|"DIV"|"IMUL"|"AND"|"LEA"|"OR"|"SAR"|"JB"|"JE"|"JLE"|"JNB"|"JNG"|"JNO"
@@ -25,19 +25,24 @@ stack_segment = ".stack"|".stack segment"|"stack segment"
 data_segment = ".data"|".data segment"|"data segment"
 code_segment = ".code"|".code segment"|"code segment"
 model = ".model small"
+ends = "ENDS"
 byte_ptr = "byte ptr"
 word_ptr = "word ptr"
 
 delimitador = "$"
 interrogacion = "?"
+mas = "+"
+menos = "-"
 
 numero_decimal = ("(-"{Digito}+")")|{Digito}+
 numero_hexadecimal = [0-9a-fA-F]+H
 numero_binario = [0-1]+B
 
 espacio=[ \t\r\n]+
+espaciodos = " "
 comentario = ";"
 coma = ","
+
 
 db = "db"|"DB"
 dw = "dw"|"DW"
@@ -52,13 +57,17 @@ dupdec = ({dup} {corchete_abre} {numero_decimal} {corchete_cierra})
 dupbin = ({dup} {corchete_abre} {numero_binario} {corchete_cierra})
 duphex = ({dup} {corchete_abre} {numero_hexadecimal} {corchete_cierra})
 dupsin = ({dup} {corchete_abre} {mensaje} {corchete_cierra})
-
+dupdec_esp = ({dup} {espaciodos} {corchete_abre} {numero_decimal} {corchete_cierra})
+dupbin_esp = ({dup} {espaciodos} {corchete_abre} {numero_binario} {corchete_cierra})
+duphex_esp = ({dup} {espaciodos} {corchete_abre} {numero_hexadecimal} {corchete_cierra})
+dupsin_esp = ({dup} {espaciodos} {corchete_abre} {mensaje} {corchete_cierra})
 
 mensaje = ({comillas} {comillasdos})
+           
 
 dospuntos = ":"
 
-eti = ({Identificador} {dospuntos})
+/*eti = ({Identificador} {dospuntos})*/
 
 corchete_abre = "("
 corchete_cierra = ")"
@@ -66,7 +75,14 @@ corchete_cierra = ")"
 parentesis_abre = "["
 parentesis_cierra = "]"
 
-parentesis = ({ parentesis_abre } .* { parentesis_cierra })
+parentesis = ({parentesis_abre} {parentesis_cierra})
+
+parentesis_con_registros = ({parentesis_abre} {registro} {parentesis_cierra})
+parentesis_con_registros_y_digitos = ({parentesis_abre} {registro} {mas} {numero_decimal} {parentesis_cierra})
+parentesis_con_identificador_y_registro = ({parentesis_abre} {Identificador} {mas} {registro} {parentesis_cierra})
+parentesis_con_identificador_y_registro2 = ({parentesis_abre} {Identificador} {espacio} {mas} {espacio} {registro} {parentesis_cierra})
+parentesis_con_registros_digitos = ({parentesis_abre} {registro} {mas} {registro} {mas} {numero_decimal} {parentesis_cierra})
+parentesis_con_registros_digitos2 = ({parentesis_abre} {registro} {espaciodos} {mas} {espaciodos} {registro} {espaciodos} {mas} {espaciodos} {numero_decimal} {parentesis_cierra})
 
 delim = ( {comillassimples} {delimitador} {comillassimples} )
 %{
@@ -117,6 +133,7 @@ delim = ( {comillassimples} {delimitador} {comillassimples} )
 
 /* ignora los comentarios*/
 ";".* { /* Ignorar */ }
+{ends} {return token(yytext(), "Pseudoinstruccion", yyline, yycolumn);}
 
 {delim} {return token(yytext(), "Simbolo", yyline, yycolumn);}
 
@@ -129,16 +146,31 @@ delim = ( {comillassimples} {delimitador} {comillassimples} )
 
 {mensaje} { return token(yytext(), "Constante", yyline, yycolumn); }
 
-{parentesis} {return token(yytext(), "Simbolo", yyline, yycolumn);}
+
+/*{parentesis} {return token(yytext(), "Simbolo", yyline, yycolumn);}*/
+{parentesis_con_registros} {return token(yytext(), "Simbolo con Registro", yyline, yycolumn);}
+{parentesis_con_registros_y_digitos} {return token(yytext(), "Simbolo con Registro y numero Decimal", yyline, yycolumn);}
+{parentesis_con_identificador_y_registro} {return token(yytext(), "Simbolo con Simbolo y Registro", yyline, yycolumn);}
+{parentesis_con_identificador_y_registro2} {return token(yytext(), "Simbolo con Simbolo y Registro", yyline, yycolumn);}
+{parentesis_con_registros_digitos} {return token(yytext(), "Simbolo con Registro, Registro y numero Decimal", yyline, yycolumn);}
+{parentesis_con_registros_digitos2} {return token(yytext(), "Simbolo con Registro, Registro y numero Decimal", yyline, yycolumn);}
+
+{mas} {return token(yytext(), "Mas", yyline, yycolumn);}
+{menos} {return token(yytext(), "Menos", yyline, yycolumn);}
 
 {dupdec} { return token(yytext(), "Pseudoinstruccion y constante decimal", yyline, yycolumn); }
 {dupbin} { return token(yytext(), "Pseudoinstruccion y constante binario", yyline, yycolumn); }
 {duphex} { return token(yytext(), "Pseudoinstruccion y constante hexadecimal", yyline, yycolumn); }
-{dupsin} { return token(yytext(), "Pseudoinstruccion", yyline, yycolumn); }
+{dupsin} { return token(yytext(), "Pseudoinstruccion y constante", yyline, yycolumn); }
+{dupdec_esp} { return token(yytext(), "Pseudoinstruccion y constante decimal", yyline, yycolumn); }
+{dupbin_esp} { return token(yytext(), "Pseudoinstruccion y constante binario", yyline, yycolumn); }
+{duphex_esp} { return token(yytext(), "Pseudoinstruccion y constante hexadecimal", yyline, yycolumn); }
+{dupsin_esp} { return token(yytext(), "Pseudoinstruccion y constante", yyline, yycolumn); }
 
-{eti} {return token(yytext(), "Etiqueta", yyline, yycolumn);}
+
+/*{eti} {return token(yytext(), "Etiqueta", yyline, yycolumn);}*/
 
 /* si un elemento no es agrupado se llama este metodo */
-. { return token(yytext(), "Error", yyline, yycolumn); }
+. { return token(yytext(),"Elemento no identificado",yyline, yycolumn); }
 
 

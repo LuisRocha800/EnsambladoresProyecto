@@ -3,7 +3,7 @@ import compilerTools.TextColor;
 import java.awt.Color;
 
 %%
-%class LexerColors
+%class LexerColoresPalabras
 %type TextColor
 %char 
 %ignorecase
