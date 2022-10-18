@@ -904,7 +904,7 @@ class Lexer {
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1:
-            { return token(yytext(),"Elemento no identificado",yyline, yycolumn);
+            { return token(yytext(),"Elemento_no_identificado",yyline, yycolumn);
             }
             // fall through
           case 21: break;
@@ -924,7 +924,7 @@ class Lexer {
             // fall through
           case 24: break;
           case 5:
-            { return token(yytext(), "Numero Decimal", yyline, yycolumn);
+            { return token(yytext(), "Numero_Decimal", yyline, yycolumn);
             }
             // fall through
           case 25: break;

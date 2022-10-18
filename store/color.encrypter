@@ -1,0 +1,47 @@
+data segment
+.code
+
+.data segment
+    variableXXXXXX db 0	
+    variable1 db 1000
+    variable2 db 0
+    variable3 db "Hola"
+    variable4 dw 0BF300H   
+    variable5 db                
+    variable6 db 45 dup(' ')      
+    variable7 dw 09999H
+    variable8 dw 10 dup (10000)
+    variable9 db 1100B dup(80)
+    variable10 db 0CCh dup(1111B)
+    variable11 db 20 dup ("YO")  
+    const1 equ 100
+    const2 equ 800000  
+ends
+
+.stack segment
+    dw 128 dup(100)
+ends
+
+.code segment
+AAA AX		                ;Equipo 1
+CLC 0FFH                        ;Equipo 1
+STD [BX+DI+10]                  ;Equipo 2
+AAD 10,20                       ;Equipo 2 
+PUSHF VARIABLE1                 ;Equipo 3  
+STI CX,WORD PTR BH              ;Equipo 3
+NOP ETIQUETA1                   ;Equipo 4
+RET                             ;Equipo 4
+LODSB ETIQUET2                  ;Equipo 5     
+POPA 0                          ;Equipo 5               
+HLT CX,DX                       ;Equipo 6
+ETIQUETA1: LODSW                ;Equipo 6
+CLC DI                          ;Equipo 7
+CMPSW                           ;Equipo 7
+MOVSB 10101010B                 ;Equipo 8
+PUSHA VARIABLE3,S               ;Equipo 8
+AAD                             ;Equipo 9
+CLD                             ;Equipo 9
+IRET                            ;Equipo 10
+MOVSW                           ;Equipo 10
+ends
+ 

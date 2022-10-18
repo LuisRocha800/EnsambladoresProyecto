@@ -115,10 +115,10 @@ class Lexer {
     "\1\6\2\0\1\13\2\6\1\0\1\6\1\0\1\6"+
     "\11\0\1\15\4\0\1\13\42\0\1\16\2\0\1\17"+
     "\2\0\1\20\6\0\1\21\1\0\1\22\1\23\32\0"+
-    "\1\24\7\0";
+    "\1\24\13\0\1\25\2\0";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[253];
+    int [] result = new int[260];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -174,10 +174,11 @@ class Lexer {
     "\0\u2616\0\u2648\0\u267a\0\u26ac\0\u26de\0\u2710\0\u2742\0\u2774"+
     "\0\u27a6\0\u27d8\0\u280a\0\u283c\0\u286e\0\u28a0\0\u28d2\0\u2904"+
     "\0\u2936\0\u2968\0\u299a\0\u29cc\0\u29fe\0\62\0\u2a30\0\u2a62"+
-    "\0\u2a94\0\u2ac6\0\u2af8\0\u2b2a\0\u2b5c";
+    "\0\u2a94\0\u2ac6\0\u2af8\0\u2b2a\0\u2b5c\0\u2b8e\0\u2bc0\0\u2bf2"+
+    "\0\u2c24\0\62\0\u2c56\0\u2c88";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[253];
+    int [] result = new int[260];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -371,11 +372,13 @@ class Lexer {
     "\1\364\51\0\1\316\61\0\1\321\17\0\1\365\63\0"+
     "\2\360\36\0\1\366\7\0\1\364\100\0\1\367\65\0"+
     "\1\370\44\0\1\371\65\0\2\372\100\0\1\373\63\0"+
-    "\1\374\25\0\1\343\66\0\1\375\4\0\2\372\100\0"+
-    "\1\223\71\0\1\223\71\0\1\366\3\0";
+    "\1\374\25\0\1\375\66\0\1\376\4\0\2\372\100\0"+
+    "\1\223\71\0\1\223\23\0\1\377\5\0\2\u0100\120\0"+
+    "\1\366\17\0\1\u0101\63\0\2\u0100\36\0\1\u0102\21\0"+
+    "\2\u0103\53\0\1\u0104\4\0\2\u0103\120\0\1\u0102\3\0";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[11150];
+    int [] result = new int[11450];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -425,10 +428,10 @@ class Lexer {
     "\5\0\1\1\1\0\1\1\2\0\1\11\2\1\1\0"+
     "\1\1\1\0\1\1\11\0\1\11\4\0\1\1\42\0"+
     "\1\11\2\0\1\11\2\0\1\11\6\0\1\1\1\0"+
-    "\2\11\32\0\1\11\7\0";
+    "\2\11\32\0\1\11\13\0\1\11\2\0";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[253];
+    int [] result = new int[260];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -904,105 +907,110 @@ class Lexer {
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1:
-            { return token(yytext(),"Elemento no identificado",yyline, yycolumn);
+            { return token(yytext(),"Elemento_no_identificado",yyline, yycolumn);
             }
             // fall through
-          case 21: break;
+          case 22: break;
           case 2:
             { /* Ignorar */
             }
             // fall through
-          case 22: break;
+          case 23: break;
           case 3:
             { return token(yytext(), "Mas", yyline, yycolumn);
             }
             // fall through
-          case 23: break;
+          case 24: break;
           case 4:
             { return token(yytext(), "Menos", yyline, yycolumn);
             }
             // fall through
-          case 24: break;
+          case 25: break;
           case 5:
-            { return token(yytext(), "Numero Decimal", yyline, yycolumn);
+            { return token(yytext(), "Numero_Decimal", yyline, yycolumn);
             }
             // fall through
-          case 25: break;
+          case 26: break;
           case 6:
             { return token(yytext(), "Simbolo", yyline, yycolumn);
             }
             // fall through
-          case 26: break;
+          case 27: break;
           case 7:
             { return token(yytext(), "Constante", yyline, yycolumn);
             }
             // fall through
-          case 27: break;
-          case 8:
-            { return token(yytext(), "Numero Binario", yyline, yycolumn);
-            }
-            // fall through
           case 28: break;
-          case 9:
-            { return token(yytext(), "Numero Hexadecimal", yyline, yycolumn);
+          case 8:
+            { return token(yytext(), "Numero_Binario", yyline, yycolumn);
             }
             // fall through
           case 29: break;
+          case 9:
+            { return token(yytext(), "Numero_Hexadecimal", yyline, yycolumn);
+            }
+            // fall through
+          case 30: break;
           case 10:
             { return token(yytext(), "Registro", yyline, yycolumn);
             }
             // fall through
-          case 30: break;
+          case 31: break;
           case 11:
             { return token(yytext(), "Pseudoinstruccion", yyline, yycolumn);
             }
             // fall through
-          case 31: break;
+          case 32: break;
           case 12:
             { return token(yytext(), "Instruccion", yyline, yycolumn);
             }
             // fall through
-          case 32: break;
+          case 33: break;
           case 13:
             { return token(yytext(), "Simbolo con Registro", yyline, yycolumn);
             }
             // fall through
-          case 33: break;
-          case 14:
-            { return token(yytext(), "Pseudoinstruccion y constante decimal", yyline, yycolumn);
-            }
-            // fall through
           case 34: break;
-          case 15:
-            { return token(yytext(), "Simbolo con Simbolo y Registro", yyline, yycolumn);
+          case 14:
+            { return token(yytext(), "Pseudoinstruccion_y_constante_decimal", yyline, yycolumn);
             }
             // fall through
           case 35: break;
-          case 16:
-            { return token(yytext(), "Simbolo con Registro y numero Decimal", yyline, yycolumn);
+          case 15:
+            { return token(yytext(), "Simbolo_con_Simbolo_y_Registro", yyline, yycolumn);
             }
             // fall through
           case 36: break;
-          case 17:
-            { return token(yytext(), "Pseudoinstruccion y constante", yyline, yycolumn);
+          case 16:
+            { return token(yytext(), "Simbolo_con_Registro_y_numero_Decimal", yyline, yycolumn);
             }
             // fall through
           case 37: break;
-          case 18:
-            { return token(yytext(), "Pseudoinstruccion y constante binario", yyline, yycolumn);
+          case 17:
+            { return token(yytext(), "Pseudoinstruccion_y_constante", yyline, yycolumn);
             }
             // fall through
           case 38: break;
-          case 19:
-            { return token(yytext(), "Pseudoinstruccion y constante hexadecimal", yyline, yycolumn);
+          case 18:
+            { return token(yytext(), "Pseudoinstruccion_y_constante_binario", yyline, yycolumn);
             }
             // fall through
           case 39: break;
-          case 20:
-            { return token(yytext(), "Simbolo con Registro, Registro y numero Decimal", yyline, yycolumn);
+          case 19:
+            { return token(yytext(), "Pseudoinstruccion_y_constante_hexadecimal", yyline, yycolumn);
             }
             // fall through
           case 40: break;
+          case 20:
+            { return token(yytext(), "Simbolo_con _Registro,_Registro_y_numero_Decimal", yyline, yycolumn);
+            }
+            // fall through
+          case 41: break;
+          case 21:
+            { return token(yytext(), "Simbolo_con_Registro,_Registro_y_numero_Decimal", yyline, yycolumn);
+            }
+            // fall through
+          case 42: break;
           default:
             zzScanError(ZZ_NO_MATCH);
         }

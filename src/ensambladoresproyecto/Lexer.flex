@@ -126,9 +126,9 @@ delim = ( {comillassimples} {delimitador} {comillassimples} )
 {code_segment} { return token(yytext(), "Pseudoinstruccion", yyline, yycolumn); }
 {model} {return token(yytext(), "Pseudoinstruccion", yyline, yycolumn);}
 
-{numero_decimal} { return token(yytext(), "Numero Decimal", yyline, yycolumn); } 
-{numero_hexadecimal} { return token(yytext(), "Numero Hexadecimal", yyline, yycolumn); } 
-{numero_binario} { return token(yytext(), "Numero Binario", yyline, yycolumn); } 
+{numero_decimal} { return token(yytext(), "Numero_Decimal", yyline, yycolumn); } 
+{numero_hexadecimal} { return token(yytext(), "Numero_Hexadecimal", yyline, yycolumn); } 
+{numero_binario} { return token(yytext(), "Numero_Binario", yyline, yycolumn); } 
 
 
 /* ignora los comentarios*/
@@ -149,28 +149,28 @@ delim = ( {comillassimples} {delimitador} {comillassimples} )
 
 /*{parentesis} {return token(yytext(), "Simbolo", yyline, yycolumn);}*/
 {parentesis_con_registros} {return token(yytext(), "Simbolo con Registro", yyline, yycolumn);}
-{parentesis_con_registros_y_digitos} {return token(yytext(), "Simbolo con Registro y numero Decimal", yyline, yycolumn);}
-{parentesis_con_identificador_y_registro} {return token(yytext(), "Simbolo con Simbolo y Registro", yyline, yycolumn);}
-{parentesis_con_identificador_y_registro2} {return token(yytext(), "Simbolo con Simbolo y Registro", yyline, yycolumn);}
-{parentesis_con_registros_digitos} {return token(yytext(), "Simbolo con Registro, Registro y numero Decimal", yyline, yycolumn);}
-{parentesis_con_registros_digitos2} {return token(yytext(), "Simbolo con Registro, Registro y numero Decimal", yyline, yycolumn);}
+{parentesis_con_registros_y_digitos} {return token(yytext(), "Simbolo_con_Registro_y_numero_Decimal", yyline, yycolumn);}
+{parentesis_con_identificador_y_registro} {return token(yytext(), "Simbolo_con_Simbolo_y_Registro", yyline, yycolumn);}
+{parentesis_con_identificador_y_registro2} {return token(yytext(), "Simbolo_con_Simbolo_y_Registro", yyline, yycolumn);}
+{parentesis_con_registros_digitos} {return token(yytext(), "Simbolo_con _Registro,_Registro_y_numero_Decimal", yyline, yycolumn);}
+{parentesis_con_registros_digitos2} {return token(yytext(), "Simbolo_con_Registro,_Registro_y_numero_Decimal", yyline, yycolumn);}
 
 {mas} {return token(yytext(), "Mas", yyline, yycolumn);}
 {menos} {return token(yytext(), "Menos", yyline, yycolumn);}
 
-{dupdec} { return token(yytext(), "Pseudoinstruccion y constante decimal", yyline, yycolumn); }
-{dupbin} { return token(yytext(), "Pseudoinstruccion y constante binario", yyline, yycolumn); }
-{duphex} { return token(yytext(), "Pseudoinstruccion y constante hexadecimal", yyline, yycolumn); }
-{dupsin} { return token(yytext(), "Pseudoinstruccion y constante", yyline, yycolumn); }
-{dupdec_esp} { return token(yytext(), "Pseudoinstruccion y constante decimal", yyline, yycolumn); }
-{dupbin_esp} { return token(yytext(), "Pseudoinstruccion y constante binario", yyline, yycolumn); }
-{duphex_esp} { return token(yytext(), "Pseudoinstruccion y constante hexadecimal", yyline, yycolumn); }
-{dupsin_esp} { return token(yytext(), "Pseudoinstruccion y constante", yyline, yycolumn); }
+{dupdec} { return token(yytext(), "Pseudoinstruccion_y_constante_decimal", yyline, yycolumn); }
+{dupbin} { return token(yytext(), "Pseudoinstruccion_y_constante_binario", yyline, yycolumn); }
+{duphex} { return token(yytext(), "Pseudoinstruccion_y_constante_hexadecimal", yyline, yycolumn); }
+{dupsin} { return token(yytext(), "Pseudoinstruccion_y_constante", yyline, yycolumn); }
+{dupdec_esp} { return token(yytext(), "Pseudoinstruccion_y_constante_decimal", yyline, yycolumn); }
+{dupbin_esp} { return token(yytext(), "Pseudoinstruccion_y_constante_binario", yyline, yycolumn); }
+{duphex_esp} { return token(yytext(), "Pseudoinstruccion_y_constante_hexadecimal", yyline, yycolumn); }
+{dupsin_esp} { return token(yytext(), "Pseudoinstruccion_y_constante", yyline, yycolumn); }
 
 
 /*{eti} {return token(yytext(), "Etiqueta", yyline, yycolumn);}*/
 
 /* si un elemento no es agrupado se llama este metodo */
-. { return token(yytext(),"Elemento no identificado",yyline, yycolumn); }
+. { return token(yytext(),"Elemento_no_identificado",yyline, yycolumn); }
 
 

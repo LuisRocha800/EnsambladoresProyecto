@@ -1,26 +1,141 @@
-;codigo uno ejemplo
+.model small
 
-.stack
-
+include 'emu8086.inc'
+ 
+data segment
+    
+    array_num dw 00h,00h,00h,00h,00h,00h,00h,00h
 ends
 
 code segment
-varuno db ?
+      
+call main
+
+main proc         
+     call vector
+     call burbuja 
+     menu
+     ret
+main endp
+
+menu macro
+     printn ""
+     printn "ORDENAMIENTO DE LA BURBUJA"
+     printn " 1. Ordenamiento por algoritmo de burbuja" 
+     printn " 2. Salir"
+     printn ""
+     print " Opcion: "
+     call scan_num
+     cmp cx, 1
+     je call imprimir1
+     jmp fin
+     ret
+endm     
+      
+     
+vector proc
+     call inicio
+     call llenado     
+     ret
+vector endp
+
+llenado proc
+     print "Numero: "
+     call scan_num
+     mov [array_num + si], cx
+     printn ""
+     add si, 02
+     inc dx
+     cmp dx, 10
+     jne llenado
+     mov si,0
+     mov dx,0
+     mov cx,0
+     ret
+llenado endp     
+     
+inicio proc
+     lea si,array_num
+     mov ax,@data
+     mov ds,ax
+     ret
+inicio endp     
+    
+
+fin proc
+  printn ""
+  printn "" 
+  printn " Presione tecla para salir"
+  mov ah, 0h
+  int 16h
+  mov ax, 4c00h
+  int 21h
+  ret
+fin endp    
+     
+
+burbuja proc
+   mov ax, array_num[si]
+   mov bx, array_num[si+2]
+   cmp ax, bx
+   ja menor
+   add si, 2
+   inc cx
+   cmp cx, 10
+   jne burbuja
+   mov cx, 0
+   mov si, 0
+   call verificamenor
+   ret
+burbuja endp   
+   
+   
+menor proc
+   mov array_num[si], bx
+   mov array_num[si+2], ax
+   add si, 2
+   inc cx
+   jmp call burbuja
+   ret
+menor endp
+   
+verificamenor proc
+   mov ax, array_num[si]
+   mov bx, array_num[si+2]
+   cmp ax, bx
+   ja resetmenor
+   add si, 2
+   inc cx
+   cmp cx, 10
+   jne verificamenor
+   ret 
+verificamenor endp
+
+resetmenor proc
+   mov si,0
+   mov cx,0
+   jmp call burbuja
+   ret
+resetmenor endp
+
+imprimir1 proc
+    printn " "
+    print " Ordenamiento de burbuja: "
+    mov si, 0
+    mov cx, 10
+    printmen:
+        mov ax, array_num[si]
+        call print_num
+        print ","
+        add si, 2
+        loop printmen
+    mov si, 0
+    mov cx, 0
+    print ""
+    menu
+    ret
 ends
-
-
-.code segment
-
-mov ah,09h
-lea dx,varuno
-int 21h
-
-0101
-
-1111b
-
-10
-
-10h
-
-ends
+ 
+define_print_num
+define_print_num_uns 
+define_scan_num           
